@@ -28,4 +28,10 @@ export class ShoppingListService {
     this.ingredients.push(ingredient);
     this.ingredientsChanged.emit(this.ingredients.slice()); // refreshes ingredients list after adding to it
   }
+
+  addIngredients(ingredients: Ingredient[]){
+    // ... is the spread operator.
+    this.ingredients.push(...ingredients);
+    this.ingredientsChanged.emit(this.ingredients.slice());
+  }
 }
