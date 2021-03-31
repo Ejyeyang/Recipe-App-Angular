@@ -43,6 +43,10 @@ export class RecipeService {
     private shoppingListService: ShoppingListService
   ) { }
 
+  getRecipe(id: number){
+    return this.recipes.slice()[id];
+  }
+
   getRecipes(){
     return this.recipes.slice();
   }
