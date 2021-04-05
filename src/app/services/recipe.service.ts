@@ -9,6 +9,8 @@ import { ShoppingListService } from './shopping-list.service';
 })
 export class RecipeService {
   recipesChanged = new Subject<Recipe[]>();
+  private recipes: Recipe[];
+  /*
   private recipes: Recipe[] = [
     //testing recipe data
     new Recipe(
@@ -39,6 +41,7 @@ export class RecipeService {
       ]
     )
   ];
+  */
 
   constructor(
     private shoppingListService: ShoppingListService
@@ -68,6 +71,12 @@ export class RecipeService {
 
   deleteRecipe(index: number){
     this.recipes.splice(index, 1);
+    this.recipesChanged.next(this.recipes.slice());
+  }
+
+  //replaces our recipes array with recipes from firebase datastorage
+  setRecipes(recipes: Recipe[]){
+    this.recipes = recipes;
     this.recipesChanged.next(this.recipes.slice());
   }
 }
