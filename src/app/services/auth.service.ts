@@ -5,13 +5,14 @@ import { throwError } from 'rxjs';
 
 
 //return data from api
-interface AuthResponseData{
+export interface AuthResponseData{
   kind: string;
   idToken: string;
   email: string;
   refreshToken: string;
   expiresIn: string;
   localId: string;
+  registered?: boolean;
 }
 
 @Injectable({
@@ -23,8 +24,19 @@ export class AuthService {
     private http: HttpClient
   ) { }
 
+  login(email: string, password: string){
+    return this.http.post<AuthResponseData>(
+      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBEZau9Juf7sjmh6LeQKH5hJSGh9HMxLDg',
+      {
+        email: email,
+        password: password,
+        returnSecureToken: true
+      }
+    );
+  }
+
   signup(email: string, password: string){
-    return this.http.post(
+    return this.http.post<AuthResponseData>(
       'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBEZau9Juf7sjmh6LeQKH5hJSGh9HMxLDg',
       {
         email: email,
