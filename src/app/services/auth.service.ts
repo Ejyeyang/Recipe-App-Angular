@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
@@ -32,7 +32,7 @@ export class AuthService {
         password: password,
         returnSecureToken: true
       }
-    );
+    ).pipe(catchError(this.handleError));
   }
 
   signup(email: string, password: string){
@@ -43,16 +43,26 @@ export class AuthService {
         password: password,
         returnSecureToken: true
       }
-    ).pipe(catchError(errorRes => {
-      let errorMessage = 'An unknown error occured!';
-      if(!errorRes.error || !errorRes.error.error){
-        return throwError(errorMessage);
-      }
-      switch(errorRes.error.error.message){
-        case 'EMAIL_EXISTS':
-          errorMessage = 'This email exists already';
-      }
+    ).pipe(
+      catchError(this.handleError));
+  }
+
+  private handleError(errorRes: HttpErrorResponse){
+    let errorMessage = 'An unknown error occured!';
+    if(!errorRes.error || !errorRes.error.error){
       return throwError(errorMessage);
-    }));
+    }
+    switch(errorRes.error.error.message){
+      case 'EMAIL_EXISTS':
+        errorMessage = 'This email exists already';
+        break;
+      case 'EMAIL_NOT_FOUND':
+        errorMessage = 'This email does not exists.';
+        break;
+      case 'INVALID_PASSWORD':
+        errorMessage = 'This password is not correct';
+        break;
+    }
+    return throwError(errorMessage);
   }
 }
