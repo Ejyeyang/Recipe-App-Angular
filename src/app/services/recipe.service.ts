@@ -9,7 +9,7 @@ import { ShoppingListService } from './shopping-list.service';
 })
 export class RecipeService {
   recipesChanged = new Subject<Recipe[]>();
-  private recipes: Recipe[];
+  private recipes: Recipe[] = [];
   /*
   private recipes: Recipe[] = [
     //testing recipe data
