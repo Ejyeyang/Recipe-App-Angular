@@ -10,7 +10,8 @@ import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/recipes', pathMatch: 'full'},
-  {path: 'recipes', component: RecipesComponent, children:[
+  {path: 'recipes', component: RecipesComponent,
+  children:[
     {path: '', component: RecipeStartComponent},
     {path: 'new', component: RecipeEditComponent}, // order matters
     {path: ':id', component: RecipeDetailComponent, resolve: [RecipeResolverService]},
